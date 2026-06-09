@@ -1,0 +1,309 @@
+/* ── Reset & base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green-accent: #6b8f3e;
+  --green-light:  #e8f0da;
+  --teal-accent:  #3a9ea5;
+  --blue-mat:     #3b4fa8;
+  --text-primary: #1a1a1a;
+  --text-muted:   #5a5a5a;
+  --bg:           #f8f8f6;
+  --white:        #ffffff;
+  --border:       #d4d8cc;
+  --radius:       8px;
+  --shadow:       0 2px 12px rgba(0,0,0,0.10);
+  --transition:   0.35s ease;
+  --max-deck:     960px;
+}
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── Deck shell ── */
+.deck {
+  max-width: var(--max-deck);
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+.deck__header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 2px solid var(--green-accent);
+}
+
+.deck__header h1 {
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  color: var(--green-accent);
+  letter-spacing: 0.01em;
+}
+
+.deck__subtitle {
+  margin-top: 0.4rem;
+  font-size: 1rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ── Stage (hides inactive slides) ── */
+.deck__stage {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Individual slide ── */
+.slide {
+  display: none;
+  gap: 1.5rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  animation: fadeIn var(--transition) both;
+}
+
+.slide--active {
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Slide media (image side) ── */
+.slide__media {
+  flex-shrink: 0;
+}
+
+.slide__media figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.slide__media img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  max-height: 340px;
+}
+
+.slide__media figcaption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: var(--green-light);
+  border-top: 3px solid var(--green-accent);
+  font-size: 0.875rem;
+}
+
+.slide__title {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.slide__date {
+  color: var(--text-muted);
+  font-style: italic;
+  white-space: nowrap;
+}
+
+/* ── Slide description (text side) ── */
+.slide__description {
+  padding: 1.5rem 1.25rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.slide__description h2 {
+  font-size: 1.1rem;
+  color: var(--green-accent);
+  border-left: 4px solid var(--teal-accent);
+  padding-left: 0.6rem;
+}
+
+.slide__description p {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  line-height: 1.7;
+}
+
+/* ── Expandable details ── */
+details {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  font-size: 0.9rem;
+}
+
+details summary {
+  cursor: pointer;
+  padding: 0.55rem 0.85rem;
+  font-weight: 600;
+  color: var(--teal-accent);
+  list-style: none;
+  user-select: none;
+}
+
+details summary::-webkit-details-marker { display: none; }
+
+details summary::before {
+  content: '+ ';
+  font-weight: 700;
+}
+
+details[open] summary::before {
+  content: '− ';
+}
+
+details p {
+  padding: 0 0.85rem 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  border-top: 1px solid var(--border);
+  margin-top: 0;
+  font-size: 0.875rem;
+}
+
+/* ── Navigation ── */
+.deck__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.deck__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.6rem 1.2rem;
+  min-height: 44px;
+  min-width: 90px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  background: var(--green-accent);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background var(--transition), opacity var(--transition);
+}
+
+.deck__btn:hover:not(:disabled) {
+  background: #4f6e2c;
+}
+
+.deck__btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.deck__btn:focus-visible {
+  outline: 3px solid var(--teal-accent);
+  outline-offset: 2px;
+}
+
+/* ── Dot indicators ── */
+.deck__dots {
+  display: flex;
+  gap: 0.6rem;
+  list-style: none;
+}
+
+.deck__dot {
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--green-accent);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: background var(--transition);
+}
+
+.deck__dot--active,
+.deck__dot[aria-current="true"] {
+  background: var(--green-accent);
+}
+
+.deck__dot:focus-visible {
+  outline: 3px solid var(--teal-accent);
+  outline-offset: 2px;
+}
+
+/* ── Slide counter ── */
+.deck__counter {
+  text-align: center;
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ── Tablet: side-by-side layout ── */
+@media (min-width: 600px) {
+  .slide--active {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .slide__media {
+    width: 55%;
+    max-width: 55%;
+  }
+
+  .slide__media img {
+    height: 100%;
+    max-height: none;
+  }
+
+  .slide__description {
+    width: 45%;
+    overflow-y: auto;
+    max-height: 480px;
+  }
+}
+
+/* ── Desktop: larger image, capped height ── */
+@media (min-width: 1024px) {
+  .slide__media {
+    width: 60%;
+    max-width: 60%;
+  }
+
+  .slide__description {
+    width: 40%;
+    max-height: 520px;
+    padding: 2rem 1.5rem 2rem;
+  }
+
+  .slide__media img {
+    max-height: 520px;
+  }
+}
+
+/* ── Print ── */
+@media print {
+  .deck__nav, .deck__counter { display: none; }
+  .slide { display: flex !important; page-break-after: always; }
+  details { border: none; }
+  details[open] p, details p { display: block; }
+}
